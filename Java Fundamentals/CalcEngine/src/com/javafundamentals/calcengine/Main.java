@@ -7,30 +7,39 @@ public class Main {
         char[] opCodes = {'d', 'a', 's', 'm'};
         double[] results = new double[opCodes.length];
 
-    for(int i=0; i<opCodes.length; i++) {
-        switch (opCodes[i]) {
+        //call to execute function
+        for (int i = 0; i < opCodes.length; i++) {
+            results[i] = execute(opCodes[i], leftVals[i], rightVals[i]);
+        }
+
+        //printing results
+        for (double currentResult : results) {
+            System.out.println(currentResult);
+        }
+    }
+
+    //execute method
+    static double execute ( char opCode, double leftVal, double rightVal){
+        double result;
+        switch (opCode) {
             case 'a':
-                results[i] = leftVals[i]+ rightVals[i];
+                result = leftVal + rightVal;
                 break;
             case 's':
-                results[i] = leftVals[i] - rightVals[i];
+                result = leftVal - rightVal;
                 break;
             case 'm':
-                results[i] = leftVals[i] * rightVals[i];
+                result = leftVal * rightVal;
                 break;
-            case 'd': {
-                if (rightVals[i] != 0)
-                    results[i] = leftVals[i] / rightVals[i];
+            case 'd':
+                result = rightVal != 0 ? leftVal / rightVal : 0.0d;
                 break;
-            }
             default: {
-                System.out.println("Invalid opCode: " + opCodes[i]);
-                results[i] = 0.0d;
+                System.out.println("Invalid opCode: " + opCode);
+                result = 0.0d;
                 break;
             }
         }
-    }
-    for(double currentResult: results)
-        System.out.println(currentResult);
+        return result;
     }
 }
