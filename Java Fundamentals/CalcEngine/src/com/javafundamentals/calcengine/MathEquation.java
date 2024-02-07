@@ -3,7 +3,7 @@ package com.javafundamentals.calcengine;
 public class MathEquation {
     private double leftVal;
     private double rightVal;
-    private char opCode;
+    private MathOperation opCode;
     private double result;
 
     private static int numberOfCalculations;
@@ -11,11 +11,11 @@ public class MathEquation {
 
     public MathEquation(){}
 
-    public MathEquation(char opCode){
+    public MathEquation(MathOperation opCode){
         this.opCode = opCode;
     }
 
-    public MathEquation(char opCode, double leftVal, double rightVal){
+    public MathEquation(MathOperation opCode, double leftVal, double rightVal){
         this(opCode);
         this.leftVal = leftVal;
         this.rightVal = rightVal;
@@ -23,10 +23,10 @@ public class MathEquation {
 
     public void execute(){
         switch (opCode) {
-            case 'a' -> result = leftVal + rightVal;
-            case 's' -> result = leftVal - rightVal;
-            case 'm' -> result = leftVal * rightVal;
-            case 'd' -> result = rightVal != 0 ? leftVal / rightVal : 0.0d;
+            case ADD -> result = leftVal + rightVal;
+            case SUBTRACT-> result = leftVal - rightVal;
+            case MULTIPLY -> result = leftVal * rightVal;
+            case DIVIDE -> result = rightVal != 0 ? leftVal / rightVal : 0.0d;
             default -> {
                 System.out.println("Invalid opCode: " + opCode);
                 result = 0.0d;
@@ -55,8 +55,9 @@ public class MathEquation {
         return sumOfResults / numberOfCalculations;
     }
 
+    @Override
     public String toString(){
-        char symbol = symbolFromOpCode();
+        char symbol = opCode.getSymbol();
         StringBuilder builder = new StringBuilder(20);
         builder.append(leftVal);
         builder.append(" ");
@@ -67,27 +68,14 @@ public class MathEquation {
         builder.append(result);
         return builder.toString();
     }
-    public char symbolFromOpCode(){
-        char[] opCodes = {'a','s','m','d'};
-        char[] symbols = {'+', '-','*','/'};
-        char symbol = ' ';
-
-        for (int index = 0; index < opCodes.length; index++){
-            if(opCode == opCodes[index]){
-                symbol = symbols[index];
-                break;
-            }
-        }
-        return symbol;
-    }
 
     //getters and setters
     public double getLeftVal(){ return leftVal;}
     public void setLeftVal(double leftVal){ this.leftVal = leftVal; }
     public double getRightVal(){ return rightVal; }
     public void setRightVal(double rightVal){ this.rightVal=rightVal; }
-    public char getOpCode(){ return opCode; }
-    public void setOpCode(char opCode){ this.opCode=opCode; }
+    public MathOperation getOpCode(){ return opCode; }
+    public void setOpCode(MathOperation opCode){ this.opCode=opCode; }
     public double getResult(){ return result; }
 
 }
