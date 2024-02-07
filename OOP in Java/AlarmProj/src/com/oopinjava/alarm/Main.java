@@ -3,11 +3,11 @@ package com.oopinjava.alarm;
 import com.oopinjava.alarm.Alarm;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        System.out.println("Hello world!");
-        Alarm alarm = new Alarm();
+        Alarm alarm = new Alarm("Temperature too high");
         alarm.turnOn();
+        alarm.snooze();
         alarm.sendReport();
     }
 }
