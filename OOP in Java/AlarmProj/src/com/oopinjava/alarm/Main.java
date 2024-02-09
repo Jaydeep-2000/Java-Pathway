@@ -7,7 +7,6 @@ public class Main {
 
         Alarm alarm = new Alarm("Temperature too high");
         alarm.turnOn();
-        alarm.snooze();
         alarm.sendReport();
     }
 }

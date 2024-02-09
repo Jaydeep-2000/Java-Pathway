@@ -3,18 +3,20 @@ package com.oopinjava.alarm;
 import java.time.LocalDateTime;
 
 public class Alarm {
-    private boolean active;
+    protected boolean active;
     private final String message;
     private LocalDateTime snoozeUntil;
 
     //constructor
     public Alarm(String message){
         this.message = message;
+        stopSnoozing();
     }
 
     //getters and setters
+    public String getMessage(){ return message; }
     public LocalDateTime getSnoozeUntil(){ return snoozeUntil; }
-    
+
     public void snooze(){
         if(active)
             snoozeUntil = LocalDateTime.now().plusMinutes(5);
@@ -52,3 +54,5 @@ public class Alarm {
         System.out.println(getReport(true));
     }
 }
+
+
