@@ -8,4 +8,5 @@ public class ProductFixtures {
     public  static Product window = new Product(3, "Glass Window", 10);
 
 
+
 }

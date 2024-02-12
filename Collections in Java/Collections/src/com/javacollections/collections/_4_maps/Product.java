@@ -1,6 +1,8 @@
 package com.javacollections.collections._4_maps;
 
 public class Product {
+
+
     private final int id;
 
     private final String name;
@@ -17,3 +19,4 @@ public class Product {
         return id;
     }
 }
+
