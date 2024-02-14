@@ -1,5 +1,6 @@
 package com.javaexceptions.calcengine;
 
+import com.javaexceptions.calcengine.InvalidStatementException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,12 +15,17 @@ public class Main {
             System.out.println("File no found: "+ args[0]);
         }catch (IOException ex) {
             System.out.println("Error: "+ ex.getMessage());
-        }catch (Exception ex) {
+        }catch(InvalidStatementException ex){
+            System.out.println("Error invalid statement: "+ ex.getMessage());
+            if(ex.getCause() != null)
+                System.out.println("cause by " + ex.getCause());
+        }
+        catch (Exception ex) {
             System.out.println("Error processing file: "+ ex.getMessage());
         }
     }
 
-    private static void processFile(BufferedReader reader) throws IOException {
+    private static void processFile(BufferedReader reader) throws IOException, InvalidStatementException {
 
         String inputLine = null;
         while ((inputLine = reader.readLine()) != null) {
@@ -27,15 +33,26 @@ public class Main {
         }
     }
 
-    private static void performOperation(String inputLine){
-        String[] parts = inputLine.split(" ");
-        MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());
-        int leftVal = valueFromWord(parts[1]);
-        int rightVal = valueFromWord(parts[2]);
+    private static void performOperation(String inputLine) throws InvalidStatementException {
+        try {
+            String[] parts = inputLine.split(" ");
 
-        int result = execute(operation, leftVal, rightVal);
+            if (parts.length != 3) {
+                throw new InvalidStatementException("Statement must have 3 parts: operation leftVal rightVal");
+            }
 
-        System.out.println(inputLine + " = " + result);
+            MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());
+            int leftVal = valueFromWord(parts[1]);
+            int rightVal = valueFromWord(parts[2]);
+
+            int result = execute(operation, leftVal, rightVal);
+
+            System.out.println(inputLine + " = " + result);
+        }catch(InvalidStatementException ex){
+            throw ex;
+        }catch(Exception ex){
+            throw new InvalidStatementException("Error processing statement", ex);
+        }
     }
 
     static int execute(MathOperation operation, int leftVal, int rightVal){
