@@ -15,22 +15,36 @@ public class Main {
             System.out.println("File no found: "+ args[0]);
         }catch (IOException ex) {
             System.out.println("Error: "+ ex.getMessage());
-        }catch(InvalidStatementException ex){
-            System.out.println("Error invalid statement: "+ ex.getMessage());
-            if(ex.getCause() != null)
-                System.out.println("cause by " + ex.getCause());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Error processing file: "+ ex.getMessage());
         }
     }
 
-    private static void processFile(BufferedReader reader) throws IOException, InvalidStatementException {
+    private static void processFile(BufferedReader reader) throws IOException{
 
         String inputLine = null;
         while ((inputLine = reader.readLine()) != null) {
-            performOperation(inputLine);
+            try {
+                performOperation(inputLine);
+            }catch(InvalidStatementException ex){
+                System.out.println(ex.getMessage() + " - " + inputLine);
+                writeInvalidStatementExceptionToLog(ex, inputLine);
+            }
         }
+
+    }
+
+    static void writeInvalidStatementExceptionToLog(InvalidStatementException ex, String inputLine) {
+        System.err.println("");
+        System.err.println("***************************************************");
+        System.err.println("Information written to log system");
+        System.err.println("***************************************************");
+
+        System.err.println(ex.getMessage() + " - " + inputLine);
+        if(ex.getCause() != null){
+            System.out.println(" caused by" + ex.getCause());
+        }
+        ex.printStackTrace(System.err);
     }
 
     private static void performOperation(String inputLine) throws InvalidStatementException {
@@ -43,9 +57,12 @@ public class Main {
 
             MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());
             int leftVal = valueFromWord(parts[1]);
+
+
             int rightVal = valueFromWord(parts[2]);
 
             int result = execute(operation, leftVal, rightVal);
+
 
             System.out.println(inputLine + " = " + result);
         }catch(InvalidStatementException ex){
